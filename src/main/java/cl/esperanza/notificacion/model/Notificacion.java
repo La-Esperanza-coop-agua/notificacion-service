@@ -35,5 +35,5 @@ public class Notificacion {
     private boolean leida;
 
     @Column(nullable = false)
-    private LocalDate fecha_emision;
+    private LocalDate fechaEmision;
 }
