@@ -1,13 +1,24 @@
 package cl.esperanza.notificacion.dto;
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record UpdateNotificacionRequest( 
-    @NotBlank(message = "idUsuarioDestino no puede estar vacio") String idUsuarioDestino,
-    @NotBlank(message = "tipoAlerta no puede estar vacia") String tipoAlerta,
-    @NotBlank(message = "mensaje no puede estar vacia") String mensaje,
-    @NotNull(message = "El estado de leido no puede estar nulo") boolean leida,
-    @NotNull(message = "FechaEmision no puede estar vacia") LocalDate fechaEmision){
+    @NotBlank(message = "idNotificacion no puede estar vacio")
+    String idNotificacion,
+
+    @NotBlank(message = "asunto no puede estar vacio")
+    String asunto,
+
+    @NotBlank(message = "mensaje no puede estar vacio")
+    String mensaje,
+
+    @NotNull(message = "destinatarios no puede ser null")
+    @NotEmpty(message = "Debe existir al menos un destinatario")
+    List<String> destinatarios
+
+){
 }
