@@ -1,5 +1,4 @@
 package cl.esperanza.notificacion.dto;
-import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
