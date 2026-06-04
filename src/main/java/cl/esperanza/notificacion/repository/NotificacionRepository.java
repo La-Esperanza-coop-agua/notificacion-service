@@ -10,7 +10,6 @@ import cl.esperanza.notificacion.model.Notificacion;
 
 @Repository
 public interface NotificacionRepository extends JpaRepository<Notificacion, Integer>{
+    
     List<Notificacion> findByFechaEmision(LocalDate fechaEmision);
-
-    List<Notificacion> findByLeida(boolean leida);
 }

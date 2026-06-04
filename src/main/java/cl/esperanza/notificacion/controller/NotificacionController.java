@@ -43,5 +43,13 @@ public class NotificacionController {
         Notificacion nuevaNotificacion = notificacionService.guardarNotificacion(NotificacionMapper.toModel(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevaNotificacion);
     }
+    
+    // Endpoint 3 para probar la comunicación
+    @GetMapping("/test-correos")
+    public ResponseEntity<List<String>> probarCorreos() {
+        List<String> correos = notificacionService.obtenerCorreosDeSocios();
+        System.out.println("Correos recibidos del servicio de Socios: " + correos);
+        return ResponseEntity.ok(correos);
+    }
 
 }
