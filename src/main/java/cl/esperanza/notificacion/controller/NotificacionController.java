@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping("api/v1/notificaciones")
+@RequestMapping("/api/v1/notificaciones")
 public class NotificacionController {
     private final NotificacionService notificacionService;
 

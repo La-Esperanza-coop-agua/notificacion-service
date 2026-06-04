@@ -9,7 +9,6 @@ public class WebClientConfig {
     
     @Bean(name = "webClientSocios") 
     public WebClient webClientSocios() {
-        return WebClient.builder()
-                .baseUrl("http://localhost:8082/api/v1/socios").build();
+        return WebClient.builder().baseUrl("http://localhost:8082/api/v1/socios").build();
     }
 }
