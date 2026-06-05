@@ -19,7 +19,6 @@ import cl.esperanza.notificacion.model.Notificacion;
 import cl.esperanza.notificacion.service.NotificacionService;
 import jakarta.validation.Valid;
 
-
 @RestController
 @RequestMapping("/api/v1/notificaciones")
 public class NotificacionController {
@@ -40,7 +39,16 @@ public class NotificacionController {
     // EndPoint 2 guardar
     @PostMapping
     public ResponseEntity<Notificacion> addNotificacion(@Valid @RequestBody CreateNotificacionRequest request){
-        Notificacion nuevaNotificacion = notificacionService.guardarNotificacion(NotificacionMapper.toModel(request));
+        Notificacion notificacion = NotificacionMapper.toModel(request);
+        List<String> correosSocios = notificacionService.obtenerCorreosDeSocios();
+
+        if (correosSocios != null) {
+            notificacion.setDestinatarios(correosSocios);
+        } else {
+            notificacion.setDestinatarios(new java.util.ArrayList<>());
+        }
+
+        Notificacion nuevaNotificacion = notificacionService.guardarNotificacion(notificacion);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevaNotificacion);
     }
     
