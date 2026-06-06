@@ -36,7 +36,7 @@ public class NotificacionController {
         return ResponseEntity.ok(registros);
     }
     
-    // EndPoint 2 guardar
+    // EndPoint 2 simular un correo
     @PostMapping
     public ResponseEntity<Notificacion> addNotificacion(@Valid @RequestBody CreateNotificacionRequest request){
         Notificacion notificacion = NotificacionMapper.toModel(request);
@@ -52,12 +52,4 @@ public class NotificacionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevaNotificacion);
     }
     
-    // Endpoint 3 para probar la comunicación
-    @GetMapping("/test-correos")
-    public ResponseEntity<List<String>> probarCorreos() {
-        List<String> correos = notificacionService.obtenerCorreosDeSocios();
-        System.out.println("Correos recibidos del servicio de Socios: " + correos);
-        return ResponseEntity.ok(correos);
-    }
-
 }
