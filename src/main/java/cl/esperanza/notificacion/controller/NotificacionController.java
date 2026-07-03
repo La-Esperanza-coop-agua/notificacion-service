@@ -14,42 +14,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.esperanza.notificacion.dto.CreateNotificacionRequest;
-import cl.esperanza.notificacion.mapper.NotificacionMapper;
 import cl.esperanza.notificacion.model.Notificacion;
 import cl.esperanza.notificacion.service.NotificacionService;
 import jakarta.validation.Valid;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/v1/notificaciones")
+@Tag(name = "Notificaciones", description = "Envío y simulación de alertas o correos masivos a los socios de la cooperativa.")
 public class NotificacionController {
+    
     private final NotificacionService notificacionService;
 
-    // Constructor de Inyeccion
-    public NotificacionController(NotificacionService notifServ){
-        this.notificacionService = notifServ;
+    public NotificacionController(NotificacionService notificacionService){
+        this.notificacionService = notificacionService;
     }
     
-    // EndPoint 1 findByFechaEmision
+    @Operation(summary = "Obtener notificaciones por fecha", description = "Lista el historial de avisos emitidos en una fecha específica.")
     @GetMapping("/fecha/{fecha}")
     public ResponseEntity<List<Notificacion>> getNotificacionPorFecha(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
         List<Notificacion> registros = notificacionService.obtenerPorFechaEmision(fecha);
         return ResponseEntity.ok(registros);
     }
     
-    // EndPoint 2 simular un correo
+    @Operation(summary = "Simular y enviar notificación", description = "Crea un aviso masivo obteniendo automáticamente todos los correos de los socios mediante WebClient.")
     @PostMapping
     public ResponseEntity<Notificacion> addNotificacion(@Valid @RequestBody CreateNotificacionRequest request){
-        Notificacion notificacion = NotificacionMapper.toModel(request);
-        List<String> correosSocios = notificacionService.obtenerCorreosDeSocios();
-
-        if (correosSocios != null) {
-            notificacion.setDestinatarios(correosSocios);
-        } else {
-            notificacion.setDestinatarios(new java.util.ArrayList<>());
-        }
-
-        Notificacion nuevaNotificacion = notificacionService.guardarNotificacion(notificacion);
+        Notificacion nuevaNotificacion = notificacionService.registrarNotificacionConSocios(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevaNotificacion);
     }
-    
 }
